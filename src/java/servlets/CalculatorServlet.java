@@ -31,8 +31,41 @@ public class CalculatorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        getServletContext().getRequestDispatcher("/WEB-INF/calculator.jsp").
-                    forward(request, response);
+        String firstStr = request.getParameter("first");
+        String secondStr = request.getParameter("second");
+        String operation = request.getParameter("operation");
+
+        int result=0;
+        boolean calcPerformed=false;
+        
+        if (operation != null)
+        {
+        if (firstStr!=null && secondStr!=null && !firstStr.equals("") && !secondStr.equals(""))
+            {
+                int first = Integer.parseInt(firstStr);
+                int second = Integer.parseInt(secondStr);
+
+                char operationType = operation.charAt(0);
+
+                switch (operationType)
+                {
+                    case '+': result = first + second;
+                        break;
+                    case '-': result = first - second;
+                        break;
+                    case '*': result = first * second;
+                        break;
+                    case '%': result = first % second;
+                        break;
+                }
+                calcPerformed = true;
+                request.setAttribute("result", result);
+                
+            }
+        }
+        
+        getServletContext().getRequestDispatcher("/WEB-INF/calculator.jsp").forward(request, response);
+        
     }
 
     /**
